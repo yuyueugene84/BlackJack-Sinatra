@@ -14,12 +14,22 @@ helpers do
 end
 
 get '/' do
-  erb :set_name
+  #binding.pry
+  if session[:player_name] = ""
+    erb :set_name
+  else
+    erb :game
+  end
 end
 
 post '/set_name' do
   session[:player_name] = params[:player_name]
   redirect '/game'
+end
+
+post '/place_bet' do
+  session[:player_cash] = 500
+  session[:amount] = params[:amount] 
 end
 
 get '/game' do
@@ -43,3 +53,6 @@ end
 #   @my_var = "Eugene"
 #   erb :test
 # end
+
+
+#set user name
