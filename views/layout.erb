@@ -11,7 +11,10 @@
       <div class="navbar-inner">
         <div class="container">
             <ul class="nav">
-              <li><a href="/">Nav Item</a></li>
+              <li><a href="/">New Game</a></li>
+            </ul>
+            <ul class="nav">
+              <li><a href="/place_bet">Another Round</a></li>
             </ul>
         </div>
       </div>
@@ -20,6 +23,9 @@
   <div class="container">
     <%if @error %>
       <div class="alert alert-error"><%=@error%></div>
+    <% end %>
+    <%if @success %>
+      <div class="alert alert-success"><%=@success%></div>
     <% end %>
       <%= yield %>
   </div>

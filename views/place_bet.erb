@@ -1,10 +1,8 @@
 <h4>Welcome <%= session[:player_name] %>, place your bet now!</h4>
-<%= session[:deck] %>
-<%= session[:player_cash] %>
-<%= session[:player_name] %>
+<h5>You have <%= session[:player_cash] %> left </h5>
+
 
 <form action='/place_bet' method='post'>
   Amount: <input type='number' name='amount'/>
-  <br/>
   <input type='submit' class='btn'/>
 </form>
