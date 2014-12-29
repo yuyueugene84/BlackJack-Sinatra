@@ -1,9 +1,21 @@
 <h4>Welcome, <%= session[:player_name] %> !</h4>
 
+<% if @play_again %>
+<div class="well">
+  <h4>Another Round?</h4>
+  <a href="/place_bet" class="btn btn-primary">Yes</a>
+  <a href="/game_over" class="btn btn-warning">No</a>
+</div>
+<% end %>
+
 <div class="well well-large">
   <h4>The dealer cards are: </h4>
-      <% session[:dealer_cards].each do |card| %>
-        <%= card2image(card) %>
+      <% session[:dealer_cards].each_with_index do |card, i| %>
+        <% if session[:turn] != "matrix" && i == 0 %>
+          <img src='/images/cards/cover.jpg' class='card_image'>
+        <% else %>
+          <%= card2image(card) %>
+        <% end %>
       <% end %>
 
         <% if @show_dealer_hit_button %>

@@ -7,6 +7,10 @@ use Rack::Session::Cookie, :key => 'rack.session',
                            :path => '/',
                            :secret => '1234acb'
 
+BLACKJACK_AMOUNT = 21
+DEALER_HIT_BACK_MIN = 17
+PLAYER_INITIAL_CASH = 500
+
 helpers do
 
   def get_new_card(deck, deck2)
@@ -49,6 +53,34 @@ helpers do
     #return "<img src='/images/cards/" + suit + "s_" + value + ".jpg' />"
   end
 
+  def blackjack!(msg)
+    @success = "<strong>Congrats to #{session[:player_name]}! #{msg} </strong>"
+    session[:player_cash] = session[:player_cash] +  session[:amount]*2
+    @show_hit_stay_buttons = false
+    @play_again = true
+  end
+
+  def winner!(msg)
+    @success = "<strong>#{session[:player_name]} wins! #{msg}</strong>"
+    session[:player_cash] = session[:player_cash] + session[:amount]
+    @show_hit_stay_buttons = false
+    @play_again = true
+  end
+
+  def loser!(msg)
+    @error = "Sorry, looks like #{session[:player_name]} loses. #{msg}"
+    session[:player_cash] = session[:player_cash] - session[:amount]
+    @show_hit_stay_buttons = false
+    @play_again = true
+  end
+
+  def tie!(msg)
+    @success = "Looks like it's a tie! #{msg}"
+    @play_again = true
+  end
+
+
+
 end
 
 
@@ -75,7 +107,7 @@ post '/set_name' do
   end
 
   session[:player_name] = params[:player_name]
-  session[:player_cash] = 500
+  session[:player_cash] = PLAYER_INITIAL_CASH
 
   redirect '/place_bet'
 end
@@ -101,11 +133,11 @@ post '/place_bet' do
     halt erb(:place_bet)
   end
 
-
   session[:amount] = params[:amount].to_i
   session[:deck] = preparedeck
   session[:player_cards] =[]
   session[:dealer_cards] = []
+  session[:turn] = "player"
 
   redirect '/game'
 
@@ -113,6 +145,7 @@ end
 
 
 get '/game' do
+  @play_again = false
 
   if session[:player_cards].empty?
     2.times do
@@ -121,7 +154,7 @@ get '/game' do
     end
   end
 
-  if calculate_total(session[:player_cards]) == 21
+  if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
     @success = "BlackJack! You Won!"
     session[:player_cash] = session[:player_cash] +  session[:amount]*2
     @show_hit_stay_buttons = false
@@ -130,22 +163,18 @@ get '/game' do
   session[:player_sum] = calculate_total(session[:player_cards])
   session[:dealer_sum] = calculate_total(session[:dealer_cards])
 
-  #binding.pry
-
   erb :game
 end
 
 post '/game/player/hit' do
+  session[:turn] = "neo"
 
   session[:player_cards] << session[:deck].pop
 
-  if calculate_total(session[:player_cards]) == 21
-    @success = "BlackJack! You Won!"
-    session[:player_cash] = session[:player_cash] +  session[:amount]*2
-  elsif calculate_total(session[:player_cards]) > 21
-    @error = "Sorry, you went bust!"
-    session[:player_cash] = session[:player_cash] - session[:amount]
-    @show_hit_stay_buttons = false
+  if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
+    blackjack!("BlackJack! #{session[:player_name]} Won!")
+  elsif calculate_total(session[:player_cards]) > BLACKJACK_AMOUNT
+    loser!("Sorry, #{session[:player_name]} just went bust!")
   end
 
 
@@ -153,26 +182,21 @@ post '/game/player/hit' do
 end
 
 post '/game/player/stay' do
-
   @success = "You have chosen to stay!"
 
   redirect '/game/dealer'
-
 end
 
 get '/game/dealer' do
   @show_hit_stay_buttons = false
   @show_first_dealer_card = true
+  session[:turn] = "matrix"
 
-
-
-  if calculate_total(session[:dealer_cards]) == 21
-    @error = "Sorry, looks like dealer hit BlackJack..."
-    session[:player_cash] = session[:player_cash] - session[:amount]
-  elsif calculate_total(session[:dealer_cards]) > 21
-    @success = "Congrats, dealer just went bust, you win!"
-    session[:player_cash] = session[:player_cash] + session[:amount]
-  elsif calculate_total(session[:dealer_cards]) >= 17
+  if calculate_total(session[:dealer_cards]) == BLACKJACK_AMOUNT
+    loser!("Sorry, looks like dealer hit BlackJack...")
+  elsif calculate_total(session[:dealer_cards]) > BLACKJACK_AMOUNT
+    winner!("Congrats, dealer just went bust, you win!")
+  elsif calculate_total(session[:dealer_cards]) >= DEALER_HIT_BACK_MIN
     #dealer stays
     redirect '/game/check_win'
   else
@@ -189,27 +213,39 @@ post '/game/dealer/hit' do
   redirect 'game/dealer'
 end
 
+#if no one hit blackjack, compare two player's amount and determine the winner
 get '/game/check_win' do
   @show_hit_stay_buttons = false
 
   player_sum = calculate_total(session[:player_cards])
   dealer_sum = calculate_total(session[:dealer_cards])
 
-  #binding.pry
-
   if player_sum > dealer_sum
-    @success = "Congrats " + session[:player_name].to_s + ", you win, top job!"
-    session[:player_cash] = session[:player_cash] + session[:amount]
-  elsif player_sum <= dealer_sum
-    @error = "Sorry " + session[:player_name].to_s + ", you lose!"
-    session[:player_cash] = session[:player_cash] - session[:amount]
+    winner!("Congrats #{session[:player_name]}, you win, top job!")
+  elsif player_sum < dealer_sum
+    loser!("Sorry #{session[:player_name]}, you lose!")
   else
-    @error = "Tie, no one wins."
+    tie!("No one wins.")
   end
 
-  #binding.pry
-
   erb :game
+end
+
+#list amount of money made by player
+get '/game_over' do
+
+  @profit = session[:player_cash] - PLAYER_INITIAL_CASH
+
+  if @profit > 0
+    @msg = "Great job! You made #{@profit}!"
+  elsif @profit == 0
+    @msg = "No hard feelings!"
+  else
+    @msg = "You may want to consider mortgage your house."
+  end
+
+  erb :game_over
+
 end
 
 
@@ -223,6 +259,3 @@ end
 #   @my_var = "Eugene"
 #   erb :test
 # end
-
-
-#set user name
