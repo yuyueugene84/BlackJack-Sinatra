@@ -32,7 +32,8 @@
 <br/>
 <br/>
 
-<div class="well well-large">
+<div class="well well-large" id='player_area'>
+  <a id='player_color' href='#'>Change me to yellow</a>
   <h4>Your cards are:</h4>
     <% session[:player_cards].each do |card| %>
     <%= card2image(card) %>

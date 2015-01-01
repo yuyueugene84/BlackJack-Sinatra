@@ -79,8 +79,6 @@ helpers do
     @play_again = true
   end
 
-
-
 end
 
 
@@ -123,7 +121,6 @@ get '/place_bet' do
 end
 
 post '/place_bet' do
-
 
   if params[:amount].to_i < 0 || params[:amount] == ""
     @error = "Please enter an amount above 0!"
