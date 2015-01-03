@@ -1,15 +1,9 @@
+<div id="game">
+
 <h4>Welcome, <%= session[:player_name] %> !</h4>
 
-<% if @play_again %>
 <div class="well">
-  <h4>Another Round?</h4>
-  <a href="/place_bet" class="btn btn-primary">Yes</a>
-  <a href="/game_over" class="btn btn-warning">No</a>
-</div>
-<% end %>
-
-<div class="well well-large">
-  <h4>The dealer cards are: </h4>
+  <h5>The dealer cards are: </h5>
       <% session[:dealer_cards].each_with_index do |card, i| %>
         <% if session[:turn] != "matrix" && i == 0 %>
           <img src='/images/cards/cover.jpg' class='card_image'>
@@ -19,34 +13,39 @@
       <% end %>
 
         <% if @show_dealer_hit_button %>
-        <p>
-          <h4>Dealer total is <%= calculate_total(session[:dealer_cards]) %> and will hit</h4>
-
-          <form id='form_hit' action='/game/dealer/hit' method='post'>
-            <input value='Click to see dealer card &rarr;' type='submit' class='btn btn-primary'/>
-          </form>
-        </p>
+        <div id="dealer_status">
+          <h5>Dealer total is <%= calculate_total(session[:dealer_cards]) %> and will hit</h5>
+        </div>
+        <form id='form_dealer_hit' action='/game/dealer/hit' method='post'>
+          <input value='Click to see dealer card &rarr;' type='submit' class='btn btn-primary'/>
+        </form>
         <% end %>
 </div>
 
 <br/>
-<br/>
 
-<div class="well well-large" id='player_area'>
-  <a id='player_color' href='#'>Change me to yellow</a>
-  <h4>Your cards are:</h4>
+<div class="well" id='player_area'>
+<!--  <a id='player_color' href='#'>Change me to yellow</a>-->
+  <h5><%= session[:player_name] %>'s cards are:</h5>
     <% session[:player_cards].each do |card| %>
     <%= card2image(card) %>
     <% end %>
+  <div id='player_status'>
+    <h5>Your Total: <%= calculate_total(session[:player_cards])%></h5>
+    <h6>Your have <%= session[:player_cash]%> dollars left, you bet <%= session[:amount]%> in this round.</h6>
+  </div>
 </div>
-<h4>Your Total: <%= calculate_total(session[:player_cards])%></h4>
-<h5>Your have <%= session[:player_cash]%> dollars left, you bet <%= session[:amount]%> in this round.</h5>
-<br/>
-<br/>
+
+<%if @error %>
+<div class="alert alert-error"><%=@error%></div>
+<% end %>
+<%if @success %>
+<div class="alert alert-success"><%=@success%></div>
+<% end %>
 
 <% if @show_hit_stay_buttons == true %>
-  <h4>What would you like to do?</h4>
-  <div class="well well-large">
+  <h5>What would you like to do?</h5>
+  <div>
     <form id='form_hit' action='/game/player/hit' method='post'>
       <input value='Hit' type='submit' class='btn btn-primary'/>
     </form>
@@ -55,3 +54,13 @@
     </form>
   </div>
 <% end %>
+
+<% if @play_again %>
+<div class="well">
+  <h5>Another Round?</h5>
+  <a href="/place_bet" class="btn btn-primary">Yes</a>
+  <a href="/game_over" class="btn btn-danger">No</a>
+</div>
+<% end %>
+
+</div>

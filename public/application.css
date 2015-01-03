@@ -5,9 +5,18 @@
 
 #form_stay {
   float: left;
+}
 
+#player_status {
+  float: right;
+}
+
+#dealer_status {
+  float: right;
 }
 
 .card_image {
   margin: 0px 10px 10px 0px;
+  height: 150px;
+  width: 100px;
 }

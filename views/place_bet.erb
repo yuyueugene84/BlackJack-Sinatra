@@ -1,5 +1,5 @@
 <h4>Welcome <%= session[:player_name] %>, place your bet now!</h4>
-<h5>You have <%= session[:player_cash] %> left </h5>
+<h5><%= session[:player_name]%>, you have <%= session[:player_cash] %> left </h5>
 
 
 <form action='/place_bet' method='post'>

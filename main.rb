@@ -35,7 +35,7 @@ helpers do
       sum += card2value(card[1])
     end
     cards.select{|e| e[1] == "Ace"}.count.times do
-      sum -= 10 if sum > 21
+      sum -= 10 if sum > BLACKJACK_AMOUNT
     end
     sum
   end
@@ -55,7 +55,7 @@ helpers do
 
   def blackjack!(msg)
     @success = "<strong>Congrats to #{session[:player_name]}! #{msg} </strong>"
-    session[:player_cash] = session[:player_cash] +  session[:amount]*2
+    session[:player_cash] = session[:player_cash] + session[:amount]*2
     @show_hit_stay_buttons = false
     @play_again = true
   end
@@ -152,9 +152,11 @@ get '/game' do
   end
 
   if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
-    @success = "BlackJack! You Won!"
-    session[:player_cash] = session[:player_cash] +  session[:amount]*2
-    @show_hit_stay_buttons = false
+    # @success = "BlackJack! You Won!"
+    # session[:player_cash] = session[:player_cash] +  session[:amount]*2
+    # @show_hit_stay_buttons = false
+
+    blackjack!("BlackJack! #{session[:player_name]} Won!")
   end
 
   session[:player_sum] = calculate_total(session[:player_cards])
@@ -175,7 +177,7 @@ post '/game/player/hit' do
   end
 
 
-  erb :game
+  erb :game, layout: false
 end
 
 post '/game/player/stay' do
@@ -201,7 +203,7 @@ get '/game/dealer' do
     @show_dealer_hit_button = true
   end
 
-  erb :game
+  erb :game, layout: false
 
 end
 
@@ -225,7 +227,7 @@ get '/game/check_win' do
     tie!("No one wins.")
   end
 
-  erb :game
+  erb :game, layout: false
 end
 
 #list amount of money made by player
