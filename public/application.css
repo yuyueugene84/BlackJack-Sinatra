@@ -1,3 +1,9 @@
+h4, h5 {
+  color: #FFFFFF;
+  background:#7f7f7f;
+  background:rgba(0,0,0,0.5);
+}
+
 #form_hit {
   float: left;
   margin-right: 10px;
@@ -15,6 +21,11 @@
   float: right;
 }
 
+#custom_navbar {
+  opacity: 0.3;
+}
+
+
 #layout_body {
   background: url(images/background.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
@@ -25,19 +36,23 @@
 
 /*New game tab on navbar*/
 #new_game {
+  color: #000000;
   border-radius: 5px;
   text-align: center;
   font-family: Vivaldi, Cursive;
-
+  font-size: 200%;
 }
 
-/*html {
-  background: url(images/background.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-}*/
+.well {
+
+  background-color:transparent;
+  color: #FFFFFF;
+  border: 0px;
+}
+
+.form_custom {
+  color: #FFFFFF;
+}
 
 .card_image {
   margin: 0px 10px 10px 0px;

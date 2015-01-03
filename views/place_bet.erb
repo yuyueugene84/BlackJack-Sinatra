@@ -8,8 +8,8 @@
 <h5><%= session[:player_name]%>, you have <%= session[:player_cash] %> left </h5>
 
 <div class="actions">
-<form action='/place_bet' method='post'>
+<form action='/place_bet' method='post' class="form_custom">
   Amount: <input type='number' name='amount'/>
-  <input type='submit' class='btn'/>
+  <input type='submit' class="btn btn-success" value="Bet!"/>
 </form>
 </div>

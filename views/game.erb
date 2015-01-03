@@ -2,7 +2,7 @@
 
 <h4>Welcome, <%= session[:player_name] %> !</h4>
 
-<div class="well">
+<div class="well" >
   <h5>The dealer cards are: </h5>
       <% session[:dealer_cards].each_with_index do |card, i| %>
         <% if session[:turn] != "matrix" && i == 0 %>
@@ -31,8 +31,8 @@
     <%= card2image(card) %>
     <% end %>
   <div id='player_status'>
-    <h5>Your Total: <%= calculate_total(session[:player_cards])%></h5>
-    <h6>Your have <%= session[:player_cash]%> dollars left, you bet <%= session[:amount]%> in this round.</h6>
+    <h4>Your Total: <%= calculate_total(session[:player_cards])%></h4>
+    <h5>Your have <%= session[:player_cash]%> dollars left, you bet <%= session[:amount]%> in this round.</h5>
   </div>
 </div>
 
@@ -44,22 +44,24 @@
 <% end %>
 
 <% if @show_hit_stay_buttons == true %>
-  <h5>What would you like to do?</h5>
+<div class="well-large">
+  <h4>What would you like to do?</h4>
   <div>
     <form id='form_hit' action='/game/player/hit' method='post'>
       <input value='Hit' type='submit' class='btn btn-primary'/>
     </form>
     <form id='form_stay' action='/game/player/stay' method='post'>
-      <input value='Stay' type='submit' class='btn btn-warning'/>
+      <input value='Stay' type='submit' class='btn btn-success'/>
     </form>
   </div>
+</div>
 <% end %>
 
 <% if @play_again %>
 <div class="well">
   <h5>Another Round?</h5>
-  <a href="/place_bet" class="btn btn-primary">Yes</a>
-  <a href="/game_over" class="btn btn-danger">No</a>
+  <a href="/place_bet" class="btn btn-success">Yes</a>
+  <a href="/game_over" class="btn btn-warning">No</a>
 </div>
 <% end %>
 

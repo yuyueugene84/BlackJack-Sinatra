@@ -30,7 +30,7 @@ function player_hits() {
 
 //player stay
 function player_stays(){
-  $('#form_stay input').click(function(){
+  $(document).on('click', '#form_stay input', function() {
     $.ajax({
       type: 'POST',
       url: '/game/player/stay'
