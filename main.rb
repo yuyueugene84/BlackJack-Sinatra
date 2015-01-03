@@ -32,7 +32,7 @@ helpers do
   def calculate_total(cards)
     sum = 0
     cards.each do |card|
-      sum += card2value(card[1])
+      sum += card_to_value(card[1])
     end
     cards.select{|e| e[1] == "Ace"}.count.times do
       sum -= 10 if sum > BLACKJACK_AMOUNT
@@ -40,12 +40,12 @@ helpers do
     sum
   end
 
-  def card2value(card)
+  def card_to_value(card)
     card_values = {'2'=>2, '3'=>3, '4'=>4, '5'=>5, '6'=>6, '7'=>7, '8'=>8, '9'=>9, '10'=>10, 'Jack'=>10, 'Queen'=>10, 'King'=>10, 'Ace'=>11}
     return card_values.fetch(card)
   end
 
-  def card2image(card)
+  def card_to_image(card)
     suit = card[0].downcase
     value = card[1].downcase
 
@@ -110,7 +110,6 @@ post '/set_name' do
   redirect '/place_bet'
 end
 
-
 get '/place_bet' do
   if session[:player_cash] <= 0
     @error = "Go jump off a bridge and start over!"
@@ -152,10 +151,6 @@ get '/game' do
   end
 
   if calculate_total(session[:player_cards]) == BLACKJACK_AMOUNT
-    # @success = "BlackJack! You Won!"
-    # session[:player_cash] = session[:player_cash] +  session[:amount]*2
-    # @show_hit_stay_buttons = false
-
     blackjack!("BlackJack! #{session[:player_name]} Won!")
   end
 
@@ -175,7 +170,6 @@ post '/game/player/hit' do
   elsif calculate_total(session[:player_cards]) > BLACKJACK_AMOUNT
     loser!("Sorry, #{session[:player_name]} just went bust!")
   end
-
 
   erb :game, layout: false
 end
@@ -236,25 +230,17 @@ get '/game_over' do
   @profit = session[:player_cash] - PLAYER_INITIAL_CASH
 
   if @profit > 0
-    @msg = "Great job! You made #{@profit}!"
+    @game_over_msg = "Great job! You made #{@profit}!"
   elsif @profit == 0
-    @msg = "No hard feelings!"
+    @game_over_msg = "No hard feelings!"
   else
-    @msg = "You may want to consider mortgage your house."
+    @game_over_msg = "You may want to consider mortgage your house."
   end
 
   erb :game_over
 
 end
 
-
 get '/nested' do
   erb :"/user/post"
 end
-
-# get '/test' do
-#   #{}"from test action " + params[:some].to_s
-#   @error = "this is an error!"
-#   @my_var = "Eugene"
-#   erb :test
-# end
