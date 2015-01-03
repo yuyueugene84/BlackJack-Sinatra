@@ -1,8 +1,15 @@
+<%if @error %>
+<div class="alert alert-error"><%=@error%></div>
+<% end %>
+<%if @success %>
+<div class="alert alert-success"><%=@success%></div>
+<% end %>
 <h4>Welcome <%= session[:player_name] %>, place your bet now!</h4>
 <h5><%= session[:player_name]%>, you have <%= session[:player_cash] %> left </h5>
 
-
+<div class="actions">
 <form action='/place_bet' method='post'>
   Amount: <input type='number' name='amount'/>
   <input type='submit' class='btn'/>
 </form>
+</div>

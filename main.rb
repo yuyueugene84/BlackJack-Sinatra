@@ -68,7 +68,7 @@ helpers do
   end
 
   def loser!(msg)
-    @error = "Sorry, looks like #{session[:player_name]} loses. #{msg}"
+    @error = "Sorry, looks like #{session[:player_name]} loses... #{msg}"
     session[:player_cash] = session[:player_cash] - session[:amount]
     @show_hit_stay_buttons = false
     @play_again = true
@@ -192,9 +192,9 @@ get '/game/dealer' do
   session[:turn] = "matrix"
 
   if calculate_total(session[:dealer_cards]) == BLACKJACK_AMOUNT
-    loser!("Sorry, looks like dealer hit BlackJack...")
+    loser!(", looks like dealer hit BlackJack...")
   elsif calculate_total(session[:dealer_cards]) > BLACKJACK_AMOUNT
-    winner!("Congrats, dealer just went bust, you win!")
+    winner!(", dealer just went bust, you win!")
   elsif calculate_total(session[:dealer_cards]) >= DEALER_HIT_BACK_MIN
     #dealer stays
     redirect '/game/check_win'

@@ -3,6 +3,7 @@ $(document).ready(function(){
   player_stays();
   dealer_hits();
   turn_yellow();
+  card_motion();
 });
 
 function turn_yellow() {
@@ -54,4 +55,19 @@ function dealer_hits(){
   });
 }
 
+function card_motion(){
+  $('.card_image').mouseenter(function() {
+    $(this).animate({
+      width: '+=10px'
+    });
+    $(this).toggleClass('highlighted');
+  });
+
+  $('.card_image').mouseleave(function() {
+    $(this).animate({
+      width: '-=10px'
+    });
+    $(this).toggleClass('highlighted');
+  });
+}
 //backbone, ember, angular = frameworks built for rich interactive apps

@@ -15,8 +15,39 @@
   float: right;
 }
 
+#layout_body {
+  background: url(images/background.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+/*New game tab on navbar*/
+#new_game {
+  border-radius: 5px;
+  text-align: center;
+  font-family: Vivaldi, Cursive;
+
+}
+
+/*html {
+  background: url(images/background.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}*/
+
 .card_image {
   margin: 0px 10px 10px 0px;
   height: 150px;
   width: 100px;
+}
+
+.highlighted {
+  -webkit-box-shadow: 0 0 8px #FFD700;
+  -moz-box-shadow: 0 0 8px #FFD700;
+  box-shadow: 0 0 8px #FFD700;
+  cursor:pointer;
 }
