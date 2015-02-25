@@ -1,7 +1,7 @@
-h4, h5 {
+h3, h4, h5 {
   color: #FFFFFF;
-  background:#7f7f7f;
-  background:rgba(0,0,0,0.5);
+  //background:#7f7f7f;
+  //background:rgba(0,0,0,0.5);
 }
 
 #form_hit {
@@ -25,13 +25,13 @@ h4, h5 {
   opacity: 0.3;
 }
 
-
 #layout_body {
   background: url(images/background.jpg) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
+  text-align: center;
 }
 
 /*New game tab on navbar*/
@@ -66,4 +66,11 @@ h4, h5 {
   -moz-box-shadow: 0 0 8px #FFD700;
   box-shadow: 0 0 8px #FFD700;
   cursor:pointer;
+}
+.alert-success {
+  opacity: 0.5;
+}
+
+.alert-error {
+  opacity: 0.5;
 }

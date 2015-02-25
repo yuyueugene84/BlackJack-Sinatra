@@ -1,9 +1,9 @@
 <div id="game">
 
-<h4>Welcome, <%= session[:player_name] %> !</h4>
+<h4>Let's start playing, <%= session[:player_name] %> !</h4>
 
 <div class="well" >
-  <h5>The dealer cards are: </h5>
+  <h4>The dealer cards are: </h4>
       <% session[:dealer_cards].each_with_index do |card, i| %>
         <% if session[:turn] != "matrix" && i == 0 %>
           <img src='/images/cards/cover.jpg' class='card_image'>
@@ -26,7 +26,7 @@
 
 <div class="well" id='player_area'>
 <!--  <a id='player_color' href='#'>Change me to yellow</a>-->
-  <h5><%= session[:player_name] %>'s cards are:</h5>
+  <h4><%= session[:player_name] %>'s cards are:</h4>
     <% session[:player_cards].each do |card| %>
     <%= card_to_image(card) %>
     <% end %>

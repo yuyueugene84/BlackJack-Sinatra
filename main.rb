@@ -16,9 +16,9 @@ helpers do
   def get_new_card(deck, deck2)
     rand_num = rand(1..2)
     if rand_num == 1
-      return deck.pop
+      deck.pop
     else
-      return deck2.pop
+      deck2.pop
     end
   end
 
@@ -50,7 +50,6 @@ helpers do
     value = card[1].downcase
 
     "<img src='/images/cards/#{suit}s_#{value}.jpg' class='card_image' />"
-    #return "<img src='/images/cards/" + suit + "s_" + value + ".jpg' />"
   end
 
   def blackjack!(msg)
